@@ -44,13 +44,16 @@ function App() {
         value={selectedCmaeraId}
         onChange={async (e) => {
           setSelectedCameraId(e.target.value);
-          setMediaStream(
-            await navigator.mediaDevices.getUserMedia({
-              video: {
-                deviceId: e.target.value,
-              },
-            })
-          );
+          setMediaStream(null);
+          setTimeout(async () => {
+            setMediaStream(
+              await navigator.mediaDevices.getUserMedia({
+                video: {
+                  deviceId: e.target.value,
+                },
+              })
+            );
+          }, 1000);
         }}
       >
         {cameraList.map((camera) => (
@@ -67,9 +70,7 @@ function App() {
         <button onClick={stopRecording}>Stop Recording</button>
         <video src={mediaBlobUrl} controls autoPlay loop />
       </div>
-      {mediaStream && (
-        <MyMediaRecorder customStream={mediaStream}></MyMediaRecorder>
-      )}
+      {mediaStream && <MyMediaRecorder customStream={mediaStream} />}
     </>
   );
 }
